@@ -24,3 +24,11 @@ examples thus some of the code is Copyright © 2001-2013 Python
 Software Foundation; All Rights Reserved under the PSF license (GPL
 compatible) http://docs.python.org/2/library/socketserver.html
 
+Sources
+========================
+
+https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions
+https://stackoverflow.com/questions/3167154/how-to-split-a-dos-path-into-its-components-in-python
+https://docs.python.org/3/library/mimetypes.html
+https://www.w3schools.com/python/python_file_open.asp
+

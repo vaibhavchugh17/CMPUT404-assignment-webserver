@@ -3,11 +3,6 @@ import socketserver
 import os
 import mimetypes
 
-#https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions
-#https://stackoverflow.com/questions/3167154/how-to-split-a-dos-path-into-its-components-in-python
-#https://docs.python.org/3/library/mimetypes.html
-#https://www.w3schools.com/python/python_file_open.asp
-
 # Copyright 2013 Abram Hindle, Eddie Antonio Santos
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
