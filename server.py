@@ -44,17 +44,17 @@ class MyWebServer(socketserver.BaseRequestHandler):
         else:
             raw_path = os.path.abspath("www" + path)
             path_split = path.split('.')
-            print(raw_path)
-            if (len(path_split)==1 and path[-1]!='/'): #If not a file and not ending with "/" and doesn't exist
+            #print(raw_path)
+            if ("html" not in path and "css" not in path and path[-1]!='/'): #If not a file and not ending with "/" and doesn't exist
                 respone = "HTTP/1.1 301 Moved Permanently\r\nLocation: " + path + "/\r\n\r\n301 Moved Permanently" 
-                print(respone)
+                #print(respone)
                 self.request.sendall(respone.encode("utf-8"))
                 return #################################
             
-            print(raw_path)
+            #print(raw_path)
             if os.path.exists(raw_path):
                 if os.path.isdir(raw_path):
-                    print('its a dir')
+                    #print('its a dir')
                     raw_path = os.path.abspath(raw_path + "/index.html")
 
                 #Should be a file now   
@@ -70,9 +70,9 @@ class MyWebServer(socketserver.BaseRequestHandler):
 
                     file_content = file.read()
                     respone = "HTTP/1.1 200 OK\r\nContent-Type: " + str(fieltype) + "\r\n\r\n"
-                    print(respone)
+                    #print(respone)
                     self.request.sendall(respone.encode("utf-8"))
-                    print('sending file content')
+                    #print('sending file content')
                     self.request.send(file_content)
 
                 else: #If a given directory does not have index.html
