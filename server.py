@@ -1,5 +1,12 @@
 #  coding: utf-8 
 import socketserver
+import os
+import mimetypes
+
+#https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions
+#https://stackoverflow.com/questions/3167154/how-to-split-a-dos-path-into-its-components-in-python
+#https://docs.python.org/3/library/mimetypes.html
+#https://www.w3schools.com/python/python_file_open.asp
 
 # Copyright 2013 Abram Hindle, Eddie Antonio Santos
 # 
@@ -32,7 +39,61 @@ class MyWebServer(socketserver.BaseRequestHandler):
     def handle(self):
         self.data = self.request.recv(1024).strip()
         print ("Got a request of: %s\n" % self.data)
-        self.request.sendall(bytearray("OK",'utf-8'))
+        client_request = self.data.decode("utf-8").split()
+        #print(client_request)
+
+        path = client_request[1]
+        if client_request[0] != "GET":
+            respone = "HTTP/1.1 405 Method Not Allowed\r\n"
+            self.request.sendall(respone.encode("utf-8"))
+        else:
+            raw_path = os.path.abspath("www" + path)
+            path_split = path.split('.')
+            print(raw_path)
+            if (len(path_split)==1 and path[-1]!='/'): #If not a file and not ending with "/" and doesn't exist
+                respone = "HTTP/1.1 301 Moved Permanently\r\nLocation: " + path + "/\r\n\r\n301 Moved Permanently" 
+                print(respone)
+                self.request.sendall(respone.encode("utf-8"))
+                return #################################
+            
+            print(raw_path)
+            if os.path.exists(raw_path):
+                if os.path.isdir(raw_path):
+                    print('its a dir')
+                    raw_path = os.path.abspath(raw_path + "/index.html")
+
+                #Should be a file now   
+                if os.path.exists(raw_path) and os.path.isfile(raw_path):
+                    filename = os.path.normpath(raw_path).split(os.path.sep)[-1]
+                    fieltype = mimetypes.guess_type(filename)[0]
+                    
+                    try:
+                        file = open(raw_path, "rb")
+                    except:
+                        self.send_404()
+                        return
+
+                    file_content = file.read()
+                    respone = "HTTP/1.1 200 OK\r\nContent-Type: " + str(fieltype) + "\r\n\r\n"
+                    print(respone)
+                    self.request.sendall(respone.encode("utf-8"))
+                    print('sending file content')
+                    self.request.send(file_content)
+
+                else: #If a given directory does not have index.html
+                    self.send_404()
+            else:
+                self.send_404()
+
+    def send_404(self):
+        respone = "HTTP/1.1 404 Not Found\r\n"
+        self.request.sendall(respone.encode("utf-8"))                
+
+
+
+
+
+
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080
