@@ -24,7 +24,7 @@ examples thus some of the code is Copyright © 2001-2013 Python
 Software Foundation; All Rights Reserved under the PSF license (GPL
 compatible) http://docs.python.org/2/library/socketserver.html
 
-Sources
+References
 ========================
 
 https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions
